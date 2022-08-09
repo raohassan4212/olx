@@ -9,7 +9,7 @@ import "./navBar.module.css";
 
 const Navbar = () => {
   return (
-    <div className="px-40 py-3 bg-[#f7f8f8]">
+    <div className="px-32 py-2 bg-[#f7f8f8]">
       <div className="mx-3 flex justify-start gap-5 items-center">
         <div>
           <Image src={OLX_BLUE} height={40} width={70} />
@@ -21,8 +21,8 @@ const Navbar = () => {
           <BsBuilding /> <span>PROPERTY</span>
         </div>
       </div>
-      <div className="w-full flex  items-center gap-3">
-        <div className="w-[100px]">
+      <div className="w-full flex  items-center gap-5">
+        <div className="w-[10%]">
           <Image
             src={OLX_BLACK}
             // style={{minHeight: "40px", minWidth: "100px"}}
@@ -31,11 +31,11 @@ const Navbar = () => {
             className="object-fill"
           />
         </div>
-        <div>
+        <div className="w-[25%]">
           <SearchBarDropDown />
         </div>
-        <div>
-          <div className=" border-[#bebfbf] border-[1.5px] flex  h-[56px] w-[650PX] justify-between rounded p-0">
+        <div className="w-[50%]">
+          <div className=" border-[#bebfbf] border-[1.5px] flex  h-[56px] w-[100%] justify-between rounded p-0">
             <input
               className=" h-full border-none w-full pl-2"
               type="text"
@@ -47,13 +47,31 @@ const Navbar = () => {
             </span>
           </div>
         </div>
-        <div>
-          <button>login</button>
-          <button className=" sell-btn">SELL</button>
+        <div className="w-[15%] flex justify-evenly items-center">
+          <button className="font-black border-b-4 border-black text-lg">login</button>
+          <button
+            style={{
+              width: "50%",
+              fontWeight: "bold",
+              fontSize: "16px",
+              border: "none",
+              borderTop: "5px solid #23e5db",
+              borderBottom: "5px solid #ffce32",
+              borderRight: "5px solid #3a77ff",
+              borderLeft: "5px solid #3a77ff",
+              borderRadius: "20px",
+              padding: "5px",
+              backgroundColor: "white",
+              boxShadow: "0 0 10px gray",
+            }}
+          >
+            Sell
+          </button>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default Navbar;

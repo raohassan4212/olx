@@ -8,9 +8,8 @@ export default function SearchBarDropDown() {
       disablePortal
       id="combo-box-demo"
       options={top100Films}
-      sx={{ width: 300 }}
-      
-      renderInput={(params) => <TextField {...params} label="Pakistan" />}
+      sx={{ width: "100%" }}
+      renderInput={(params) => <TextField size="small" {...params} label="Pakistan" />}
     />
   );
 }
