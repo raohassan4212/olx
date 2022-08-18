@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import ProductImage from "../images/oppo.jpg";
 import Person from "../images/person.png";
@@ -7,37 +7,64 @@ import Car from "../images/car.jpg";
 import { AiOutlineHeart, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { BsTelephone } from "react-icons/bs";
+import Data from "../mock_data/productsData.json";
 
 const ProductOverview = () => {
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  const [imageCount, setImageCount] = useState(0);
+
   useEffect(() => {
-    console.log("Hello");
-  });
+    console.log("Hello Count", imageCount);
+  }, [imageCount]);
+
+  const nextImage = () => {
+    if (imageCount <= Data[0].imgs.length - 2) {
+      setImageCount((e) => e + 1);
+    }
+  };
+
+  const previousImage = () => {
+    if (imageCount > 0) {
+      setImageCount((e) => e - 1);
+    }
+  }
+
   return (
     <div class="px-2 sm:px-[8%] mt-4">
       <div className="flex flex-wrap justify-between">
         <div className="w-[65%] px-2  ">
           <div className="bg-black flex justify-center h-[490px] ">
-            <Image src={ProductImage} alt="" />
+            <Image
+              src={Data[0].imgs[imageCount]}
+              alt=""
+              width={500}
+              height={490}
+            />
           </div>
           <div className="py-4 border-[#a3b4b6] border-[1px] rounded-b-md flex items-center justify-center">
             <div className="px-1 w-[5%]">
-              <div className="flex justify-center">
-                <AiOutlineLeft size={23} />
+              <div className="flex justify-center active:bg-black active:text-white">
+                <AiOutlineLeft size={23} onClick={previousImage} />
               </div>
             </div>
-            {arr.map((v, i) => {
+            {Data[0].imgs.map((v, i) => {
               return (
                 <div className="w-[11.111%] px-3" key={i}>
-                  <div>
-                    <Image src={Car} alt="" width={75} height={60} />
+                  <div
+                    className={
+                      i == imageCount
+                        ? `border-black border-[2px] flex `
+                        : `flex`
+                    }
+                  >
+                    <Image src={v} alt="" width={75} height={60} />
                   </div>
                 </div>
               );
             })}
             <div className="px-1 w-[5%]">
-              <div className="flex justify-center">
-                <AiOutlineRight size={23} />
+              <div className="flex justify-center active:bg-black active:text-white">
+                <AiOutlineRight size={23} onClick={nextImage} />
               </div>
             </div>
           </div>
@@ -47,7 +74,7 @@ const ProductOverview = () => {
             <div className=" flex justify-between items-center">
               <div>
                 <p className="text-[#002f34] text-[33px] font-black">
-                  Rs 35000
+                  {Data[0].price}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -56,12 +83,12 @@ const ProductOverview = () => {
               </div>
             </div>
             <div>
-              <p className="text-[#002f34a3] text-[15px] my-2">
-                rent a car,car rental,car rental services
+              <p className="text-[#002f34a3] text-[15px] my-2 leading-[18px]">
+                {Data[0].productName}
               </p>
             </div>
             <div className="flex justify-between mt-4">
-              <p className="text-[12px] text-[#002f34a3]">Islampura, Lahore</p>
+              <p className="text-[12px] text-[#002f34a3]">{Data[0].location}</p>
               <p className="text-[12px] text-[#002f34a3]">4 weeks ago</p>
             </div>
           </div>
@@ -71,13 +98,17 @@ const ProductOverview = () => {
             <div className="flex justify-between items-center my-2">
               <div className="flex gap-2 items-center">
                 <div>
-                  <div className="w-[65px] h-[65px] rounded-full overflow-hidden">
-                    <Image src={Person} alt="" />
+                  <div className="w-[65px] h-[65px] rounded-full overflow-hidden flex">
+                    {/* <Image src={Person} alt="" /> */}
+                    <img
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkuP4A26vUkEZwYJL4zGV8KRxUbBmcX11Mdw&usqp=CAU"
+                      alt=""
+                    />
                   </div>
                 </div>
                 <div>
                   <p className="text-[15px] text-[#222222] font-bold">
-                    Waqas Rafiq
+                    {Data[0].sellName}
                   </p>
                   <p className="text-[14px] text-[#002f34a3]">
                     Member since july 2020
