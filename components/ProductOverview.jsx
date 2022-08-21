@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import ProductImage from "../images/oppo.jpg";
-import Person from "../images/person.png";
 import Map from "../images/map.svg";
-import Car from "../images/car.jpg";
 import { AiOutlineHeart, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { BsTelephone } from "react-icons/bs";
 import Data from "../mock_data/productsData.json";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { ADDProduct } from "../store/action";
 
 const ProductOverview = () => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const router = useRouter();
 
   const [imageCount, setImageCount] = useState(0);
+  const [selProduct, setSelProduct] = useState({});
+  let arr = [1, 2, 3, 4];
+
+  const { id } = router.query;
 
   useEffect(() => {
-    console.log("Hello Count", imageCount);
-  }, [imageCount]);
+    if (router.isReady) {
+      const Product = Data.find((product) => {
+        return product.id == id;
+      });
+      console.log(Product);
+      setSelProduct(Product);
+    }
+  }, [router.isReady]);
 
   const nextImage = () => {
-    if (imageCount <= Data[0].imgs.length - 2) {
+    if (imageCount <= selProduct.imgs.length - 2) {
       setImageCount((e) => e + 1);
     }
   };
@@ -27,7 +40,15 @@ const ProductOverview = () => {
     if (imageCount > 0) {
       setImageCount((e) => e - 1);
     }
-  }
+  };
+
+  const addProduct = () => {
+    dispatch(ADDProduct(selProduct));
+  };
+
+  const show = () => {
+    console.log(state.addTOCart);
+  };
 
   return (
     <div class="px-2 sm:px-[8%] mt-4">
@@ -35,7 +56,7 @@ const ProductOverview = () => {
         <div className="w-[65%] px-2  ">
           <div className="bg-black flex justify-center h-[490px] ">
             <Image
-              src={Data[0].imgs[imageCount]}
+              src={selProduct?.imgs?.[imageCount]}
               alt=""
               width={500}
               height={490}
@@ -47,7 +68,7 @@ const ProductOverview = () => {
                 <AiOutlineLeft size={23} onClick={previousImage} />
               </div>
             </div>
-            {Data[0].imgs.map((v, i) => {
+            {selProduct?.imgs?.map((v, i) => {
               return (
                 <div className="w-[11.111%] px-3" key={i}>
                   <div
@@ -66,6 +87,27 @@ const ProductOverview = () => {
               <div className="flex justify-center active:bg-black active:text-white">
                 <AiOutlineRight size={23} onClick={nextImage} />
               </div>
+            </div>
+          </div>
+          {/* today task */}
+          <div className="py-4 border-[#a3b4b6] border-[1px] rounded-md my-2 px-3">
+            <p className="text-[19px] text-[#002f34] font-bold">Detail</p>
+            <div className="flex justify-between items-center flex-wrap">
+              {arr.map((v, i) => {
+                return (
+                  <div className="w-[48%] my-2" key={i}>
+                    <div className="flex justify-between items-center">
+                      <p className="text-[14px] text-[#002f34a3]">price</p>
+                      <p className="text-[14px] text-[#002f34]">13,00</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <hr className="border-[#ccd5d6] my-4" />
+            <p className="text-[19px] text-[#002f34] font-bold">Description</p>
+            <div>
+              <span className="text-[14px] text-[#002f34]"></span>
             </div>
           </div>
         </div>
@@ -108,7 +150,7 @@ const ProductOverview = () => {
                 </div>
                 <div>
                   <p className="text-[15px] text-[#222222] font-bold">
-                    {Data[0].sellName}
+                    {selProduct.sellName}
                   </p>
                   <p className="text-[14px] text-[#002f34a3]">
                     Member since july 2020
@@ -119,13 +161,19 @@ const ProductOverview = () => {
                 <AiOutlineRight size={22} />
               </div>
             </div>
-            <button className="text-center bg-[#002f34] w-full text-white font-medium py-3 rounded mb-6">
+            <button
+              className="text-center bg-[#002f34] w-full text-white font-medium py-3 rounded mb-6"
+              onClick={addProduct}
+            >
               Chat with Seller
             </button>
             <div className="flex justify-center items-center gap-2">
               <BsTelephone size={22} />
               <p>*****</p>
-              <p className="text-[12px] text-[#3a77ff] border-b-[1px] border-[#3a77ff]">
+              <p
+                className="text-[12px] text-[#3a77ff] border-b-[1px] border-[#3a77ff]"
+                onClick={show}
+              >
                 show number
               </p>
             </div>
