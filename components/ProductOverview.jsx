@@ -25,7 +25,6 @@ const ProductOverview = () => {
       const Product = Data.find((product) => {
         return product.id == id;
       });
-      console.log(Product);
       setSelProduct(Product);
     }
   }, [router.isReady]);
@@ -42,12 +41,22 @@ const ProductOverview = () => {
     }
   };
 
+  // Product Add Function
   const addProduct = () => {
+    
     dispatch(ADDProduct(selProduct));
   };
 
-  const show = () => {
-    console.log(state.addTOCart);
+  const increment = () => {
+    if (selProduct.quantity < 5) {
+      setSelProduct({ ...selProduct, quantity: selProduct.quantity + 1 });
+    }
+  };
+
+  const dicrement = () => {
+    if (selProduct.quantity > 1) {
+      setSelProduct({ ...selProduct, quantity: selProduct.quantity - 1 });
+    }
   };
 
   return (
@@ -116,7 +125,7 @@ const ProductOverview = () => {
             <div className=" flex justify-between items-center">
               <div>
                 <p className="text-[#002f34] text-[33px] font-black">
-                  {Data[0].price}
+                  Rs {Data[0].price}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -165,17 +174,21 @@ const ProductOverview = () => {
               className="text-center bg-[#002f34] w-full text-white font-medium py-3 rounded mb-6"
               onClick={addProduct}
             >
-              Chat with Seller
+              Add To Cart
             </button>
             <div className="flex justify-center items-center gap-2">
-              <BsTelephone size={22} />
-              <p>*****</p>
-              <p
-                className="text-[12px] text-[#3a77ff] border-b-[1px] border-[#3a77ff]"
-                onClick={show}
-              >
-                show number
-              </p>
+              <div className="flex items-center">
+                <button className="bg-[#002f34] w-9 text-[20px] rounded-l text-white" onClick={dicrement}>
+                  -
+                </button>
+                <div className="w-20 text-center">{selProduct.quantity}</div>
+                <button
+                  className="bg-[#002f34] w-9 text-[20px] rounded-r text-white"
+                  onClick={increment}
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
           {/*  */}

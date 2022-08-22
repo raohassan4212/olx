@@ -7,7 +7,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 35000,
-        "feature": true
+        "feature": true,
+        "quantity": 1
     },
     {
         "id": 1,
@@ -17,7 +18,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": true
+        "feature": true,
+        "quantity": 1
     },
     {
         "id": 2,
@@ -27,7 +29,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": false
+        "feature": false,
+        "quantity": 1
     },
     {
         "id": 3,
@@ -37,7 +40,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": false
+        "feature": false,
+        "quantity": 1
     },
     {
         "id": 4,
@@ -47,7 +51,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": false
+        "feature": false,
+        "quantity": 1
     },
     {
         "id": 5,
@@ -57,7 +62,8 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": true
+        "feature": true,
+        "quantity": 1
     },
     {
         "id": 6,
@@ -67,6 +73,9 @@
         "sellName": "Waqas Rafiq",
         "profileImg": "Person",
         "price": 45000,
-        "feature": false
+        "feature": false,
+        "quantity": 1
     }
 ]
+
+

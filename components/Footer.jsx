@@ -64,7 +64,7 @@ const Footer = () => {
       <div className="flex p-7 bg-[#ebeeef]">
         {footerData.map((val, ind) => {
           return (
-            <div className="w-1/5 m-2">
+            <div className="w-1/5 m-2" key={ind}>
               <div>
                 <h1 className="text-[14px] font-black text-[#002F34]">
                   {val[0]}

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import OLX_BLUE from "../images/OLX-blue.png";
 import OLX_BLACK from "../images/OLX-BLACK.jpg";
 import Image from "next/image";
 import { AiOutlineCar } from "react-icons/ai";
 import { BsBuilding, BsSearch } from "react-icons/bs";
 import SearchBarDropDown from "./SearchBarDropDown";
+import AddedProductPopUp from "./AddedProductPopUp";
 
 const Navbar = () => {
+  const [showPopUp, setShowPopUp] = useState(false);
   return (
     <div className="px-[8%] py-2 bg-[#f7f8f8] sticky top-0 z-50">
       <div className="flex justify-start gap-5 items-center">
@@ -47,30 +49,35 @@ const Navbar = () => {
           </div>
         </div>
         <div className="w-[15%] flex justify-evenly items-center flex-wrap mx-2">
-          <button className="font-black border-b-4 border-black text-lg">login</button>
-          <button
-            style={{
-              fontWeight: "bold",
-              fontSize: "16px",
-              marginTop: "8px",
-              border: "none",
-              borderTop: "5px solid #23e5db",
-              borderBottom: "5px solid #ffce32",
-              borderRight: "5px solid #3a77ff",
-              borderLeft: "5px solid #3a77ff",
-              borderRadius: "20px",
-              padding: "5px 25px",
-              backgroundColor: "white",
-              boxShadow: "0 0 10px gray",
-            }}
-          >
-            Sell
+          <button className="font-black border-b-4 border-black text-lg">
+            login
           </button>
+          <div>
+            <button
+              style={{
+                fontWeight: "bold",
+                fontSize: "16px",
+                marginTop: "8px",
+                border: "none",
+                borderTop: "5px solid #23e5db",
+                borderBottom: "5px solid #ffce32",
+                borderRight: "5px solid #3a77ff",
+                borderLeft: "5px solid #3a77ff",
+                borderRadius: "20px",
+                padding: "5px 25px",
+                backgroundColor: "white",
+                boxShadow: "0 0 10px gray",
+              }}
+              onClick={() => setShowPopUp((e) => !e)}
+            >
+              Cart
+            </button>
+            <AddedProductPopUp show={showPopUp} />
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
 
 export default Navbar;
