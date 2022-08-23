@@ -11,13 +11,10 @@ const AddedProductPopUp = ({ show }) => {
 
   useEffect(() => {
     const priceArray = state?.map((val) => {
-      // console.log(val);
       return val.price * val.quantity;
     });
-    console.log(priceArray)
 
     if (priceArray?.length) {
-      console.log("not")
       const sum = priceArray?.reduce((pre, current) => {
         return (pre += current);
       });
@@ -59,6 +56,19 @@ const AddedProductPopUp = ({ show }) => {
     dispatch(ADDProduct(JSON.parse(newIncrementProductsDispatch)));
   };
 
+  const deleteProduct = (id) => {
+    console.log(id);
+    const products = JSON.parse(localStorage.getItem("cardProducts"));
+
+    const productDeleted = products.filter((val) => {
+      return val.id !== id
+    })
+
+    localStorage.setItem(`cardProducts`, JSON.stringify(productDeleted));
+    const deletedProductsDispatch = localStorage.getItem("cardProducts");
+    dispatch(ADDProduct(JSON.parse(deletedProductsDispatch)));
+  };
+
   return (
     <div
       className={
@@ -98,7 +108,10 @@ const AddedProductPopUp = ({ show }) => {
                           Polo Republica Men's PR Printed Strips Shoulder
                           Activewear Polo Shirt - Navy /
                         </p>
-                        <MdCancel size={22} />
+                        <MdCancel
+                          size={22}
+                          onClick={() => deleteProduct(v.id)}
+                        />
                       </div>
                       <h1 className="text-[12px] mb-2">
                         Rs {v.price * v.quantity}
