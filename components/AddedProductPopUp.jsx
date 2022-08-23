@@ -1,15 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Mehran from "../images/mehran.jpg";
 import { MdCancel, MdAddShoppingCart } from "react-icons/md";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ADDProduct } from "../store/action";
 
 const AddedProductPopUp = ({ show }) => {
-  let arr = [1, 2, 3, 4];
+  const [price, setPrice] = useState(0);
   const state = useSelector((state) => state.addTOCart);
+  const dispatch = useDispatch();
 
-  useEffect(() => {});
+  useEffect(() => {
+    const priceArray = state?.map((val) => {
+      // console.log(val);
+      return val.price * val.quantity;
+    });
+    console.log(priceArray)
+
+    if (priceArray?.length) {
+      console.log("not")
+      const sum = priceArray?.reduce((pre, current) => {
+        return (pre += current);
+      });
+      setPrice(sum);
+    }
+  }, [state]);
+
+  const increment = (id) => {
+    const products = JSON.parse(localStorage.getItem("cardProducts"));
+
+    const newProducts = products.map((val) => {
+      if (val.id === id) {
+        if (val.quantity < 5) {
+          return { ...val, quantity: (val.quantity += 1) };
+        }
+      }
+      return val;
+    });
+
+    localStorage.setItem(`cardProducts`, JSON.stringify(newProducts));
+    const newIncrementProductsDispatch = localStorage.getItem("cardProducts");
+    dispatch(ADDProduct(JSON.parse(newIncrementProductsDispatch)));
+  };
+
+  const decrement = (id) => {
+    const products = JSON.parse(localStorage.getItem("cardProducts"));
+
+    const newProducts = products.map((val) => {
+      if (val.id === id) {
+        if (val.quantity > 1) {
+          return { ...val, quantity: (val.quantity -= 1) };
+        }
+      }
+      return val;
+    });
+
+    localStorage.setItem(`cardProducts`, JSON.stringify(newProducts));
+    const newIncrementProductsDispatch = localStorage.getItem("cardProducts");
+    dispatch(ADDProduct(JSON.parse(newIncrementProductsDispatch)));
+  };
+
   return (
     <div
       className={
@@ -20,11 +69,11 @@ const AddedProductPopUp = ({ show }) => {
     >
       <div className="border-b-[1px] border-[#eaeaea] py-2 ">
         <h1 className="text-center text-[12px] font-bold">
-          Shopping Cart ({state.length})
+          Shopping Cart ({state?.length})
         </h1>
       </div>
       <div className="h-[350px] overflow-y-scroll">
-        {state.length ? (
+        {state?.length ? (
           <>
             {state.map((v, i) => {
               return (
@@ -55,11 +104,17 @@ const AddedProductPopUp = ({ show }) => {
                         Rs {v.price * v.quantity}
                       </h1>
                       <div className="flex items-center">
-                        <button className="bg-[#002f34] w-9 text-[20px] rounded-l text-white">
+                        <button
+                          className="bg-[#002f34] w-9 text-[20px] rounded-l text-white"
+                          onClick={() => decrement(v.id)}
+                        >
                           -
                         </button>
                         <div className="w-20 text-center">{v.quantity}</div>
-                        <button className="bg-[#002f34] w-9 text-[20px] rounded-r text-white">
+                        <button
+                          className="bg-[#002f34] w-9 text-[20px] rounded-r text-white"
+                          onClick={() => increment(v.id)}
+                        >
                           +
                         </button>
                       </div>
@@ -84,7 +139,7 @@ const AddedProductPopUp = ({ show }) => {
       <div className="mx-4 my-4">
         <div className="flex justify-between items-center">
           <p className="text-[12px]">Subtotal:</p>
-          <p className="text-[12px]">Rs 190,00</p>
+          <p className="text-[12px]">Rs {price}</p>
         </div>
         <div className="w-full my-2">
           <button className=" w-full py-3 rounded-lg text-white bg-[#002f34]">

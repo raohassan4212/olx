@@ -10,20 +10,19 @@ const ProductCard = () => {
 
 
   return (
-    <div class="px-2 sm:px-[8%]">
+    <div className="px-2 sm:px-[8%]">
       <h1 style={{ fontSize: "24px" }}>Fresh recommendations</h1>
-      <div class="flex -mx-2 flex-wrap">
+      <div className="flex -mx-2 flex-wrap">
         {productData.map((val, ind) => {
           return (
             <Link href={{
               pathname: `/product-detail/[id]`,
               query: {id: val.id}
-            }}>
+            }} key={ind}>
               <div
-                class="w-1/2 px-2 my-3 sm:w-1/4"
-                key={ind}
+                className="w-1/2 px-2 my-3 sm:w-1/4"
               >
-                <div class="h-[290px]">
+                <div className="h-[290px]">
                   <div className="h-[145px] bg-black">
                     <div
                       style={{

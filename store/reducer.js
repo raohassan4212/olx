@@ -6,10 +6,9 @@ const INITIAL_STATE = {
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "ADD_PRODUCT":
-      console.log("redux");
       return {
         ...state,
-        addTOCart: [...state.addTOCart, action.payload],
+        addTOCart: action.payload,
       };
 
     default:

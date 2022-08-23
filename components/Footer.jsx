@@ -19,15 +19,15 @@ const Footer = () => {
   return (
     <div>
       {/* Upper Footer */}
-      <div class="px-2">
-        <div class="flex flex-wrap -mx-2 bg-[#f7f8f9]">
-          <div class="sm:w-1/3 w-1/1">
-            <div class="px-6">
+      <div className="px-2">
+        <div className="flex flex-wrap -mx-2 bg-[#f7f8f9]">
+          <div className="sm:w-1/3 w-1/1">
+            <div className="px-6">
               <Image src={OLX_FOOTER} alt="" />
             </div>
           </div>
-          <div class="sm:w-1/3 w-1/1">
-            <div class="my-8">
+          <div className="sm:w-1/3 w-1/1">
+            <div className="my-8">
               <h1 className="text-center text-[32px] font-black text-[#002f34]">
                 TRY THE OLX APP
               </h1>
@@ -38,8 +38,8 @@ const Footer = () => {
               </h1>
             </div>
           </div>
-          <div class="sm:w-1/3 w-1/1">
-            <div class="flex items-center h-full px-8">
+          <div className="sm:w-1/3 w-1/1">
+            <div className="flex items-center h-full px-8">
               <div className="w-full">
                 <h1 className="text-[14px] font-bold my-4">
                   GET YOUR APP TODAY
@@ -71,7 +71,7 @@ const Footer = () => {
                 </h1>
                 {val[1].map((v, i) => {
                   return (
-                    <div className="text-[12px] text-[#002F34A3]">{v}</div>
+                    <div className="text-[12px] text-[#002F34A3]" key={i}>{v}</div>
                   );
                 })}
               </div>

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Map from "../images/map.svg";
 import { AiOutlineHeart, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { BsTelephone } from "react-icons/bs";
 import Data from "../mock_data/productsData.json";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,8 +42,36 @@ const ProductOverview = () => {
 
   // Product Add Function
   const addProduct = () => {
-    
-    dispatch(ADDProduct(selProduct));
+    let prevProducts = localStorage.getItem("cardProducts");
+    if (prevProducts) {
+      prevProducts = JSON.parse(prevProducts);
+    } else {
+      prevProducts = [];
+    }
+    const id = prevProducts.find((val, ind) => {
+      return val.id == selProduct.id;
+    });
+    if (id) {
+      const newPrevProduct = prevProducts.map((val, ind) => {
+        if (val.id === id.id) {
+          if (val.quantity < 5) {
+            return { ...val, quantity: (val.quantity += selProduct.quantity) };
+          }
+        }
+        return val;
+      });
+      localStorage.setItem(`cardProducts`, JSON.stringify(newPrevProduct));
+      const newCartProductsDispatch = localStorage.getItem("cardProducts");
+
+      dispatch(ADDProduct(JSON.parse(newCartProductsDispatch)));
+    } else {
+      prevProducts.push(selProduct);
+
+      localStorage.setItem(`cardProducts`, JSON.stringify(prevProducts));
+      const cartProductsDispatch = localStorage.getItem("cardProducts");
+
+      dispatch(ADDProduct(JSON.parse(cartProductsDispatch)));
+    }
   };
 
   const increment = () => {
@@ -60,16 +87,18 @@ const ProductOverview = () => {
   };
 
   return (
-    <div class="px-2 sm:px-[8%] mt-4">
+    <div className="px-2 sm:px-[8%] mt-4">
       <div className="flex flex-wrap justify-between">
         <div className="w-[65%] px-2  ">
           <div className="bg-black flex justify-center h-[490px] ">
-            <Image
-              src={selProduct?.imgs?.[imageCount]}
-              alt=""
-              width={500}
-              height={490}
-            />
+            {selProduct?.imgs?.[imageCount] && (
+              <Image
+                src={selProduct?.imgs?.[imageCount]}
+                alt="hello"
+                width={500}
+                height={490}
+              />
+            )}
           </div>
           <div className="py-4 border-[#a3b4b6] border-[1px] rounded-b-md flex items-center justify-center">
             <div className="px-1 w-[5%]">
@@ -150,8 +179,9 @@ const ProductOverview = () => {
               <div className="flex gap-2 items-center">
                 <div>
                   <div className="w-[65px] h-[65px] rounded-full overflow-hidden flex">
-                    {/* <Image src={Person} alt="" /> */}
-                    <img
+                    <Image
+                      width={65}
+                      height={65}
                       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkuP4A26vUkEZwYJL4zGV8KRxUbBmcX11Mdw&usqp=CAU"
                       alt=""
                     />
@@ -178,7 +208,10 @@ const ProductOverview = () => {
             </button>
             <div className="flex justify-center items-center gap-2">
               <div className="flex items-center">
-                <button className="bg-[#002f34] w-9 text-[20px] rounded-l text-white" onClick={dicrement}>
+                <button
+                  className="bg-[#002f34] w-9 text-[20px] rounded-l text-white"
+                  onClick={dicrement}
+                >
                   -
                 </button>
                 <div className="w-20 text-center">{selProduct.quantity}</div>
