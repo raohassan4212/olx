@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Car from "../images/car.jpg";
 import { AiOutlineHeart } from "react-icons/ai";
 import productData from "../mock_data/productsData.json";
 import Link from "next/link";

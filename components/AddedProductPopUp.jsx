@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MdCancel, MdAddShoppingCart } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { ADDProduct } from "../store/action";
+import Link from "next/link";
 
 const AddedProductPopUp = ({ show }) => {
   const [price, setPrice] = useState(0);
@@ -61,8 +62,8 @@ const AddedProductPopUp = ({ show }) => {
     const products = JSON.parse(localStorage.getItem("cardProducts"));
 
     const productDeleted = products.filter((val) => {
-      return val.id !== id
-    })
+      return val.id !== id;
+    });
 
     localStorage.setItem(`cardProducts`, JSON.stringify(productDeleted));
     const deletedProductsDispatch = localStorage.getItem("cardProducts");
@@ -155,9 +156,11 @@ const AddedProductPopUp = ({ show }) => {
           <p className="text-[12px]">Rs {price}</p>
         </div>
         <div className="w-full my-2">
-          <button className=" w-full py-3 rounded-lg text-white bg-[#002f34]">
-            Checkout
-          </button>
+          <Link href={{ pathname: "/checkout" }}>
+            <button className=" w-full py-3 rounded-lg text-white bg-[#002f34]">
+              Checkout
+            </button>
+          </Link>
         </div>
       </div>
     </div>
