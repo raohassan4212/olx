@@ -144,7 +144,6 @@ const AddedProductPopUp = ({ show }) => {
               <div className="flex justify-center my-2">
                 <MdAddShoppingCart size={25} />
               </div>
-
               <p>Your Cart is Empty</p>
             </div>
           </div>

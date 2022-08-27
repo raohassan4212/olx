@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../images/elo.webp";
 import { AiOutlineLeft } from "react-icons/ai";
@@ -12,6 +12,22 @@ import {
 } from "@mui/material";
 
 const ShippingInfo = () => {
+  let [userData, setUserData] = useState({
+    email: "",
+    country: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+    sendEmail: false,
+  });
+
+  const order = () => {
+    console.log(userData);
+  }; 
+
   return (
     <div className="mt-10">
       <div className="flex justify-center w-full">
@@ -30,10 +46,17 @@ const ShippingInfo = () => {
           variant="outlined"
           fullWidth
           size="small"
+          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
         />
       </div>
       <div className="my-4 flex items-center">
-        <input type="checkbox" className="w-[15px] h-[15px]" />{" "}
+        <input
+          type="checkbox"
+          className="w-[15px] h-[15px]"
+          onClick={() =>
+            setUserData({ ...userData, sendEmail: !userData.sendEmail })
+          }
+        />
         <span className="mx-3 text-[14px]">Email with news and offer</span>
       </div>
       <div className="mt-6 mb-4">
@@ -47,10 +70,11 @@ const ShippingInfo = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Country"
+              onChange={(e) =>
+                setUserData({ ...userData, country: e.target.value })
+              }
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={"Pakistan"}>Pakistan</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -63,6 +87,9 @@ const ShippingInfo = () => {
             variant="outlined"
             fullWidth
             size="small"
+            onChange={(e) =>
+              setUserData({ ...userData, firstName: e.target.value })
+            }
           />
         </div>
         <div className="w-[50%] pl-1">
@@ -72,6 +99,9 @@ const ShippingInfo = () => {
             variant="outlined"
             fullWidth
             size="small"
+            onChange={(e) =>
+              setUserData({ ...userData, lastName: e.target.value })
+            }
           />
         </div>
       </div>
@@ -82,6 +112,9 @@ const ShippingInfo = () => {
           variant="outlined"
           fullWidth
           size="small"
+          onChange={(e) =>
+            setUserData({ ...userData, address: e.target.value })
+          }
         />
       </div>
       <div className="flex flex-wrap my-4">
@@ -92,6 +125,7 @@ const ShippingInfo = () => {
             variant="outlined"
             fullWidth
             size="small"
+            onChange={(e) => setUserData({ ...userData, city: e.target.value })}
           />
         </div>
         <div className="w-[50%] pl-1">
@@ -101,6 +135,9 @@ const ShippingInfo = () => {
             variant="outlined"
             fullWidth
             size="small"
+            onChange={(e) =>
+              setUserData({ ...userData, postalCode: e.target.value })
+            }
           />
         </div>
       </div>
@@ -111,6 +148,7 @@ const ShippingInfo = () => {
           variant="outlined"
           fullWidth
           size="small"
+          onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
         />
       </div>
       <div className="my-2 flex items-center">
@@ -129,7 +167,12 @@ const ShippingInfo = () => {
           <p>Return to cart</p>
         </div>
         <div>
-          <button className="bg-[#002f34] text-white py-4 px-10 rounded-md">Countinue to shippng</button>
+          <button
+            className="bg-[#002f34] text-white py-4 px-10 rounded-md"
+            onClick={order}
+          >
+            Countinue to shippng
+          </button>
         </div>
       </div>
     </div>

@@ -23,9 +23,12 @@ const OrderSummary = () => {
   return (
     <div className="bg-[#fafafa] h-screen">
       <div className="w-[420px] h-[170px]  mt-[60px] ml-[20px] overflow-y-scroll scrollbar-hide border-[#e1e1e1] border-b-[1px]">
-        {state?.map((val) => {
+        {state?.map((val, ind) => {
           return (
-            <div className="flex justify-between items-center flex-wrap my-5">
+            <div
+              className="flex justify-between items-center flex-wrap my-5"
+              key={ind}
+            >
               <div className="flex items-center gap-3">
                 <div>
                   <Image src={val.imgs[0]} alt="" width={60} height={60} />
