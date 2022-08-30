@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ImageUploade = () => {
+const ImageUploade = ({ getImages }) => {
   const [images, setImages] = useState([]);
 
-  async function addImage(e) {
+  useEffect(() => {
+    getImages(images);
+  }, [images]);
+
+  function addImage(e) {
     var file = e?.target?.files?.[0];
 
     const reader = new FileReader();
@@ -18,6 +22,7 @@ const ImageUploade = () => {
 
   function crossImage(imageObject) {
     const imageDeleted = images.filter((val, ind) => {
+      console.log("first");
       return imageObject != val.imageName;
     });
     setImages(imageDeleted);
