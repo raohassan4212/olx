@@ -9,21 +9,21 @@ const ImageUploade = ({ getImages }) => {
 
   function addImage(e) {
     var file = e?.target?.files?.[0];
+    setImages((images) => [...images, file]);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImages((prevObject) => [
-        ...prevObject,
-        { imgUrl: reader?.result, imageName: file.name },
-      ]);
-    };
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   setImages((prevObject) => [
+    //     ...prevObject,
+    //     { imgUrl: reader?.result, image: file },
+    //   ]);
+    // };
+    // reader.readAsDataURL(file);
   }
 
-  function crossImage(imageObject) {
-    const imageDeleted = images.filter((val, ind) => {
-      console.log("first");
-      return imageObject != val.imageName;
+  function crossImage(imageName) {
+    const imageDeleted = images.filter((val) => {
+      return imageName != val.name;
     });
     setImages(imageDeleted);
   }
@@ -48,15 +48,15 @@ const ImageUploade = ({ getImages }) => {
           <div className="upload-product" key={i}>
             <span className="inline-span">
               <span className="file-type-color">
-                {val?.imageName?.split(".")[1]}
+                {val?.name?.split(".")[1]}
               </span>
             </span>
             <span className="inline-span">
-              <p className="file-spec">{val?.imageName}</p>
+              <p className="file-spec">{val?.name}</p>
             </span>
             <span
               className="selected-show-image-crose"
-              onClick={() => crossImage(val?.imageName)}
+              onClick={() => crossImage(val?.name)}
             >
               <b className="cross">x</b>
             </span>
