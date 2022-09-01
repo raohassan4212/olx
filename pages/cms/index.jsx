@@ -7,15 +7,16 @@ import { collection, addDoc } from "firebase/firestore";
 import { v4 } from "uuid";
 
 const index = () => {
-  let productDetail = {
+  let [productDetail, setProductDetail] = useState({
     productId: "",
     productName: "",
     productPrice: 0,
     productDiscount: 0,
     productDescription: "",
     imgs: [],
-  };
+  });
 
+  const [imageUrl, setImageUrl] = useState([]);
   const [images, setImages] = useState([]);
   const [ID, setID] = useState("");
   const [globalRef, setGlobalRef] = useState(null);
@@ -28,49 +29,102 @@ const index = () => {
     setGlobalRef(imagesListRef);
   }, [ID]);
 
-  useEffect(() => {
-    async function hello() {
-      console.log("first");
-      setTimeout(() => {
-        console.log("second");
-      }, 3000);
-      console.log("third");
-    }
-    hello();
-  }, []);
-
-  const uploadProduct = () => {
+  const uploadProduct = async () => {
+    console.log(productDetail);
     // upload multiple image in firebase bucket
-    images.map((img, ind) => {
-      const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
-      uploadBytes(imagesRef, img)
-        .then((val) => {
-          console.log("upload", val);
-          listAll(globalRef)
-            .then((response) => {
-              response.items.forEach((item) => {
-                getDownloadURL(item)
-                  .then((url) => {
-                    console.log(url);
-                    if (!productDetail.imgs.includes(url)) {
-                      productDetail.imgs.push(url);
+    // images.map((img, ind) => {
+    //   const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
+    //   uploadBytes(imagesRef, img)
+    //     .then((val) => {
+    //       console.log("upload", val);
+    //       listAll(globalRef)
+    //         .then((response) => {
+    //           response.items.forEach((item) => {
+    //             getDownloadURL(item)
+    //               .then((url) => {
+    //                 console.log(url);
+    //                 if (!productDetail.imgs.includes(url)) {
+    //                   productDetail.imgs.push(url);
+    //                   // addDoc(productCollectionRef, productDetail);
+    //                 }
+    //               })
+    //               .catch((err) => {
+    //                 console.log(err);
+    //               });
+    //           });
+    //         })
+    //         .catch((err) => {
+    //           console.log(err);
+    //         });
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // });
 
-                      // addDoc(productCollectionRef, productDetail);
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
+    async function first() {
+      const promises = images.map(async (img, ind) => {
+        const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
+        await uploadBytes(imagesRef, img)
+          .then((val) => {
+            console.log("upload", val);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      await Promise.all(promises);
+
+      console.log("promise");
+
+      const resp = await listAll(globalRef);
+      console.log("check items", resp);
+
+      const item = resp.items.map(
+        async (item) =>
+          await getDownloadURL(item).then(async (val) => {
+            console.log("new", await val);
+            return val;
+          })
+      );
+      console.log("single item", item[0]);
+
+      // const url = await getDownloadURL(item);
+      // console.log("bismila", url);
+
+      listAll(globalRef)
+        .then((response) => {
+          response.items.forEach(async (item) => {
+            await getDownloadURL(item)
+              .then((url) => {
+                console.log(url);
+                if (!productDetail.imgs.includes(url)) {
+                  setImageUrl((prev) => [...prev, url]);
+
+                  // addDoc(productCollectionRef, productDetail);
+                  console.log("second promise");
+                }
+              })
+              .catch((err) => {
+                console.log(err);
               });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          });
         })
         .catch((err) => {
           console.log(err);
         });
-    });
+
+      console.log(imageUrl);
+      setProductDetail(async (prev) => ({
+        ...prev,
+        imgs: imageUrl,
+      }));
+      addDoc(productCollectionRef, productDetail);
+      console.log(productDetail);
+    }
+
+    await first();
   };
 
   const getImages = (imgs) => {
@@ -93,7 +147,10 @@ const index = () => {
             fullWidth
             size="small"
             onChange={(e) => {
-              productDetail.productId = e.target.value;
+              setProductDetail((prev) => ({
+                ...prev,
+                productId: e.target.value,
+              }));
               setID(e.target.value);
             }}
           />
@@ -105,7 +162,12 @@ const index = () => {
             variant="outlined"
             fullWidth
             size="small"
-            onChange={(e) => (productDetail.productName = e.target.value)}
+            onChange={(e) => {
+              setProductDetail((prev) => ({
+                ...prev,
+                productName: e.target.value,
+              }));
+            }}
           />
         </div>
         <div className="my-2">
@@ -115,7 +177,12 @@ const index = () => {
             variant="outlined"
             fullWidth
             size="small"
-            onChange={(e) => (productDetail.productPrice = e.target.value)}
+            onChange={(e) => {
+              setProductDetail((prev) => ({
+                ...prev,
+                productPrice: e.target.value,
+              }));
+            }}
           />
         </div>
         <div className="my-2">
@@ -125,21 +192,29 @@ const index = () => {
             variant="outlined"
             fullWidth
             size="small"
-            onChange={(e) => (productDetail.productDiscount = e.target.value)}
+            onChange={(e) => {
+              setProductDetail((prev) => ({
+                ...prev,
+                productDiscount: e.target.value,
+              }));
+            }}
           />
         </div>
         <div className="my-2">
           <TextField
             id="outlined-basic"
-            label="Product Detail"
+            label="Product Description"
             variant="outlined"
             fullWidth
             size="small"
             multiline
             rows={4}
-            onChange={(e) =>
-              (productDetail.productDescription = e.target.value)
-            }
+            onChange={(e) => {
+              setProductDetail((prev) => ({
+                ...prev,
+                productDescription: e.target.value,
+              }));
+            }}
           />
         </div>
         <div>
