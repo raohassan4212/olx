@@ -132,10 +132,6 @@ const index = () => {
     setImages(imgs);
   };
 
-  function check() {
-    console.log(productDetail.imgs);
-  }
-
   return (
     <div>
       <div className="mx-16 my-10">
@@ -220,8 +216,7 @@ const index = () => {
         <div>
           <ImageUploade getImages={getImages} />
         </div>
-        <button onClick={uploadProduct}>upload</button>
-        <button onClick={check}>leie</button>
+        <button onClick={uploadProduct} className="w-full bg-[#007bff] text-white font-semibold rounded py-2">upload</button>
       </div>
     </div>
   );
