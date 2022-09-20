@@ -73,18 +73,18 @@ const OrderSummary = () => {
       <div className="w-[420px] ml-[20px] py-4 border-[#e1e1e1] border-b-[1px]">
         <div className="flex justify-between items-center flex-wrap ">
           <p className="text-[14px]">Subtotal</p>
-          <p className="text-[14px] font-medium">Rs{price}</p>
+          <p className="text-[14px] font-medium">Rs {price}</p>
         </div>
         <div className="flex justify-between items-center flex-wrap ">
           <p className="text-[14px]">Shipping</p>
-          <p className="text-[14px] font-medium">Rs950.00</p>
+          <p className="text-[14px] font-medium">Rs 0.00</p>
         </div>
       </div>
       <div className="w-[420px] ml-[20px] py-4 border-[#e1e1e1] border-b-[1px]">
         <div className="flex justify-between items-center flex-wrap ">
           <p className="text-[14px]">Total</p>
           <p className="text-[14px] font-medium">
-            PKR <span className="text-[24px]">600.00</span>
+            PKR <span className="text-[24px]">{price}.00</span>
           </p>
         </div>
       </div>

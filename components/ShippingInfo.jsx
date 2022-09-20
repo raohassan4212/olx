@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../images/elo.webp";
 import { AiOutlineLeft } from "react-icons/ai";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { useSelector } from "react-redux";
 import {
   TextField,
   Select,
@@ -12,6 +15,13 @@ import {
 } from "@mui/material";
 
 const ShippingInfo = () => {
+  const state = useSelector((state) => state.addTOCart);
+  let productsArray = state;
+
+  // Global Filter Cart Porduct Varaible
+  const filterProduct = null;
+
+  // Order Detail Schema
   let [userData, setUserData] = useState({
     email: "",
     country: "",
@@ -22,11 +32,28 @@ const ShippingInfo = () => {
     postalCode: "",
     phone: "",
     sendEmail: false,
+    products: filterProduct,
   });
 
+  useEffect(() => {
+    if (productsArray.length != 0) {
+      filterProduct = productsArray?.map((val) => {
+        return {
+          id: val.id,
+          productName: val.productName,
+          price: val.price,
+          quantity: val.quantity,
+        };
+      });
+      setUserData({ ...userData, products: filterProduct });
+    }
+  }, [state]);
+
+  const orderCollectionRef = collection(db, "orders");
+
   const order = () => {
-    console.log(userData);
-  }; 
+    addDoc(orderCollectionRef, userData);
+  };
 
   return (
     <div className="mt-10">
