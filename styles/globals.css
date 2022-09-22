@@ -8,7 +8,7 @@
   background-color: #ffffff;
   margin: 0 auto;
   /* padding: 20px; */
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .image-upload-wrap {
@@ -49,8 +49,14 @@
   margin-bottom: 30px;
 }
 
+.upload-img-main-box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .upload-product {
-    margin: 30px 0;
+    margin: 20px 10px;
 }
 
 .inline-span {

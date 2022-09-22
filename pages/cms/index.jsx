@@ -20,6 +20,7 @@ const index = () => {
   const [images, setImages] = useState([]);
   const [ID, setID] = useState("");
   const [globalRef, setGlobalRef] = useState(null);
+  let photoURL = [];
 
   const productCollectionRef = collection(db, "products");
 
@@ -29,107 +30,93 @@ const index = () => {
     setGlobalRef(imagesListRef);
   }, [ID]);
 
+  const getImages = (imgs) => {
+    console.log(imgs);
+    setImages(imgs);
+  };
+
   const uploadProduct = async () => {
     console.log(productDetail);
-    // upload multiple image in firebase bucket
-    // images.map((img, ind) => {
-    //   const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
-    //   uploadBytes(imagesRef, img)
-    //     .then((val) => {
-    //       console.log("upload", val);
-    //       listAll(globalRef)
-    //         .then((response) => {
-    //           response.items.forEach((item) => {
-    //             getDownloadURL(item)
-    //               .then((url) => {
-    //                 console.log(url);
-    //                 if (!productDetail.imgs.includes(url)) {
-    //                   productDetail.imgs.push(url);
-    //                   // addDoc(productCollectionRef, productDetail);
-    //                 }
-    //               })
-    //               .catch((err) => {
-    //                 console.log(err);
-    //               });
-    //           });
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //         });
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // });
-
     async function first() {
-      const promises = images.map(async (img, ind) => {
-        const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
-        await uploadBytes(imagesRef, img)
-          .then((val) => {
-            console.log("upload", val);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
+      // const promises = images.map(async (img, ind) => {
+      //   const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
+      //   await uploadBytes(imagesRef, img)
+      //     .then((val) => {
+      //       console.log("upload", val);
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //     });
+      // });
 
-      await Promise.all(promises);
+      // await Promise.all(promises);
 
-      console.log("promise");
+      // console.log("promise");
 
-      const resp = await listAll(globalRef);
-      console.log("check items", resp);
+      // const resp = await listAll(globalRef);
+      // console.log("check items", resp);
 
-      const item = resp.items.map(
-        async (item) =>
-          await getDownloadURL(item).then(async (val) => {
-            console.log("new", await val);
-            return val;
-          })
-      );
-      console.log("single item", item[0]);
+      // const item = resp.items.map(
+      //   async (item) =>
+      //     await getDownloadURL(item).then(async (val) => {
+      //       console.log("new", await val);
+      //       return val;
+      //     })
+      // );
+      // console.log("single item", item[0]);
 
       // const url = await getDownloadURL(item);
       // console.log("bismila", url);
 
-      listAll(globalRef)
-        .then((response) => {
-          response.items.forEach(async (item) => {
-            await getDownloadURL(item)
-              .then((url) => {
-                console.log(url);
-                if (!productDetail.imgs.includes(url)) {
-                  setImageUrl((prev) => [...prev, url]);
-
-                  // addDoc(productCollectionRef, productDetail);
-                  console.log("second promise");
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-      console.log(imageUrl);
-      setProductDetail(async (prev) => ({
-        ...prev,
-        imgs: imageUrl,
-      }));
-      addDoc(productCollectionRef, productDetail);
+      // console.log(imageUrl);
+      // setProductDetail(async (prev) => ({
+      //   ...prev,
+      //   imgs: imageUrl,
+      // }));
+      // addDoc(productCollectionRef, productDetail);
       console.log(productDetail);
+      console.log(photoURL);
+
+      addDoc(productCollectionRef, productDetail);
     }
 
     await first();
   };
 
-  const getImages = (imgs) => {
-    console.log(imgs);
-    setImages(imgs);
+  // test
+  const imageUploadToBucket = async () => {
+    const promises = images.map(async (img, ind) => {
+      const imagesRef = ref(storage, `${ID}/${img.name + v4()}`);
+      await uploadBytes(imagesRef, img)
+        .then((val) => {
+          console.log("upload", val);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+
+    await Promise.all(promises);
+    console.log("promise");
+
+    const resp = await listAll(globalRef);
+    console.log("check items", resp);
+
+    const item = resp.items.map(
+      async (item) =>
+        await getDownloadURL(item).then(async (val) => {
+          console.log("new", await val);
+
+          photoURL.push(val);
+          return val;
+        })
+    );
+
+    console.log("Adding image URL");
+    setProductDetail(async (prev) => ({
+      ...prev,
+      imgs: photoURL,
+    }));
   };
 
   return (
@@ -215,8 +202,23 @@ const index = () => {
         </div>
         <div>
           <ImageUploade getImages={getImages} />
+          <button
+            className={
+              images.length > 0
+                ? "bg-[#007bff] text-white my-2 px-4 rounded"
+                : "hidden"
+            }
+            onClick={imageUploadToBucket}
+          >
+            Upload Images
+          </button>
         </div>
-        <button onClick={uploadProduct} className="w-full bg-[#007bff] text-white font-semibold rounded py-2">upload</button>
+        <button
+          onClick={uploadProduct}
+          className="w-full bg-[#007bff] text-white font-semibold rounded py-2"
+        >
+          Upload Product
+        </button>
       </div>
     </div>
   );

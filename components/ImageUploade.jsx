@@ -43,7 +43,7 @@ const ImageUploade = ({ getImages }) => {
           </div>
         </div>
       </div>
-      <div>
+      <div className="upload-img-main-box">
         {images.map((val, i) => (
           <div className="upload-product" key={i}>
             <span className="inline-span">
